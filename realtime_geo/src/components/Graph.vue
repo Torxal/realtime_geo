@@ -21,11 +21,22 @@
       <vl-layer-tile id="osm">
         <vl-source-osm></vl-source-osm>
       </vl-layer-tile>
+      <vl-feature>
+       <vl-geom-point
+            :coordinates="this.punkt"
+            :color="red"
+          ></vl-geom-point>
+           <vl-style-box>
+            <vl-style-circle :radius="15">
+              <vl-style-fill color="white"></vl-style-fill>
+              <vl-style-stroke color="red"></vl-style-stroke>
+            </vl-style-circle>
+          </vl-style-box>
+    </vl-feature>
     </vl-map>
     <div style="padding: 20px">
       Zoom: {{ zoom }}<br>
       Betrachtete Position: {{ center }}<br>
-      Drehung: {{ rotation }}<br>
     </div>
   </div>
   <div class="options">
@@ -33,9 +44,17 @@
     <v-slider v-model="winkel"
           thumb-label="always"
           max="360"
-          
+          color="red"
           ></v-slider>
+          <v-slider v-model="zoom"
+          thumb-label="always"
+          max="22"
+          min="15"
+          step="0.1"
+          ></v-slider>
+           <v-btn small color="primary" v-on:click="messung">Messung</v-btn>
           </div>
+
   </div>
 
 </template>
@@ -46,21 +65,42 @@ export default {
   name: 'Graph',
   props: {
     msg: String
-  },
-  watch: {
-    msg2: function(){this.msg ="tzest"},
-    winkel: function(){this.rotation = this.winkel*6.3/360}
-  },
-    data: function(){
+  }, 
+   data: function(){
      return { 
         zoom: 17.3,
         center: [ -0.46868189640700264, 51.35113755158258],
         rotation: 1.4,
         geolocPosition: undefined,
         winkel: 2,
-        copy: 1
+        copy: 1,
+        punkt: [-0.468680700264, 51.35113755158258]
       }
-  }
+  },
+  watch: {
+    winkel: function(){this.rotation = this.winkel*6.3/360},
+  },
+  methods: {
+      //Achtung CORS wurde mittels Firefox addon ausgehebelt. Normalerweise Fehlermeldung
+        messung: function(){
+          // Trick 17
+              var t = this;
+           const axios = require('axios').default;
+           //console.log(this.zoom);
+          axios({
+          method: 'get',
+            url: 'http://localhost:5000/loc ',
+
+          })
+          .then(function (response) {
+            console.log(Number(response.data[0].longitude))
+            t.punkt = [Number(response.data[0].longitude), Number(response.data[0].latitude)]
+          });
+             console.log("Ausgelöst")
+        }
+      }
+
+
 }
 
 </script>

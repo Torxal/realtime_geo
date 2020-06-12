@@ -30,7 +30,10 @@ import Graph from './components/Graph.vue'
 import Vue from 'vue'
 import VueLayers from 'vuelayers'
 import 'vuelayers/lib/style.css' // needs css-loaders
+import axios from 'axios'
+import VueAxios from 'vue-axios'
 Vue.use(VueLayers)
+Vue.use(VueAxios, axios)
 
 export default {
   name: 'App',
