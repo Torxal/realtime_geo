@@ -1,9 +1,28 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" class="logo">.
-    <h1>Positionsabfrage - Server</h1>
-    <Graph msg="hallo"/>
-  </div>
+  <v-app>
+    <v-app-bar
+      app
+      color="primary"
+      dark
+    >
+      <div class="d-flex align-center">
+        <v-img
+          alt="Hanseatic Efficiency Logo"
+          class="shrink mr-2"
+          contain
+          src="./assets/logo.png"
+          transition="scale-transition"
+          width="40"
+        />
+      <h1>Echtzeitortungssystem</h1>
+      </div>
+      <v-spacer></v-spacer>
+    </v-app-bar>
+
+    <v-content>
+      <Graph/>
+    </v-content>
+  </v-app>
 </template>
 
 <script>
@@ -12,28 +31,16 @@ import Vue from 'vue'
 import VueLayers from 'vuelayers'
 import 'vuelayers/lib/style.css' // needs css-loaders
 Vue.use(VueLayers)
+
 export default {
   name: 'App',
+
   components: {
     Graph
-  }
-}
-</script>
+  },
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-.logo {
-  margin: 0;
-  position:absolute; 
-  width: 7% ;
-  left:0px;
-  top:0px;
-}
-</style>
+  data: () => ({
+    //
+  }),
+};
+</script>

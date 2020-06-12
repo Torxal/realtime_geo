@@ -17,20 +17,27 @@
           </vl-feature>
         </template>
       </vl-geoloc>
-
+ 
       <vl-layer-tile id="osm">
         <vl-source-osm></vl-source-osm>
       </vl-layer-tile>
     </vl-map>
     <div style="padding: 20px">
       Zoom: {{ zoom }}<br>
-      Center: {{ center }}<br>
-      Rotation: {{ rotation }}<br>
-      My geolocation: {{ geolocPosition }}
+      Betrachtete Position: {{ center }}<br>
+      Drehung: {{ rotation }}<br>
     </div>
   </div>
-    
+  <div class="options">
+  <h2 class="options_title">Optionen</h2>
+    <v-slider v-model="winkel"
+          thumb-label="always"
+          max="360"
+          
+          ></v-slider>
+          </div>
   </div>
+
 </template>
 
 <script>
@@ -41,7 +48,8 @@ export default {
     msg: String
   },
   watch: {
-    msg2: function(){this.msg ="tzest"}
+    msg2: function(){this.msg ="tzest"},
+    winkel: function(){this.rotation = this.winkel*6.3/360}
   },
     data: function(){
      return { 
@@ -49,6 +57,8 @@ export default {
         center: [ -0.46868189640700264, 51.35113755158258],
         rotation: 1.4,
         geolocPosition: undefined,
+        winkel: 2,
+        copy: 1
       }
   }
 }
@@ -74,4 +84,11 @@ a {
         height: 400px;
         width: 100%;
       }
+.options {
+    width: 20%;
+    margin-left:50px;
+}
+.options_title{
+   margin-bottom: 30px;
+}
 </style>
