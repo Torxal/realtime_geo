@@ -1,8 +1,10 @@
 
 <template>
   <div class="hello">
-    <h1>{{ msg2 }}</h1>
     <div>
+      <v-alert type="warning">
+      Im Falle einer Localhost-Installation bitte Firefox nutzen und ein CORS addon installieren
+    </v-alert>
     <vl-map :load-tiles-while-animating="true" :load-tiles-while-interacting="true"
              data-projection="EPSG:4326" style="height: 400px">
       <vl-view :zoom.sync="zoom" :center.sync="center" :rotation.sync="rotation"></vl-view>
@@ -33,26 +35,48 @@
             </vl-style-circle>
           </vl-style-box>
     </vl-feature>
+    
     </vl-map>
+          <v-card
+        color="green"
+        max-height="200"
+        class="beschleunigung"
+      >
+      <v-card-title><p>Status Beschleunigungssensor</p>
+      </v-card-title>
+      <v-card-subtitle>
+       <h1>Ok</h1>
+      </v-card-subtitle>
+    
+      
+      
+  </v-card>
     <div style="padding: 20px">
       Zoom: {{ zoom }}<br>
       Betrachtete Position: {{ center }}<br>
     </div>
   </div>
   <div class="options">
+  <v-card shaped=true>
   <h2 class="options_title">Optionen</h2>
+  <p id="text_optionen">Drehwinkel</p>
     <v-slider v-model="winkel"
           thumb-label="always"
           max="360"
           color="red"
           ></v-slider>
+          <p  id="text_optionen">Zoomfaktor</p>
           <v-slider v-model="zoom"
           thumb-label="always"
           max="22"
-          min="15"
+          min="1"
           step="0.1"
           ></v-slider>
            <v-btn small color="primary" v-on:click="messung">Messung</v-btn>
+          
+          </v-card>
+        
+
           </div>
 
   </div>
@@ -70,13 +94,14 @@ export default {
      return { 
         zoom: 17.3,
         center: [ -0.46868189640700264, 51.35113755158258],
-        rotation: 1.4,
+        rotation: 6.3/360*80,
         geolocPosition: undefined,
-        winkel: 2,
+        winkel: 80,
         copy: 1,
         punkt: [-0.468680700264, 51.35113755158258]
       }
   },
+
   watch: {
     winkel: function(){this.rotation = this.winkel*6.3/360},
   },
@@ -84,19 +109,20 @@ export default {
       //Achtung CORS wurde mittels Firefox addon ausgehebelt. Normalerweise Fehlermeldung
         messung: function(){
           // Trick 17
-              var t = this;
-           const axios = require('axios').default;
-           //console.log(this.zoom);
+          var t = this;
+          const axios = require('axios').default;
+          setInterval(function(){ //console.log(this.zoom);
           axios({
           method: 'get',
             url: 'http://localhost:5000/loc ',
 
           })
           .then(function (response) {
-            console.log(Number(response.data[0].longitude))
             t.punkt = [Number(response.data[0].longitude), Number(response.data[0].latitude)]
+            console.log(t.punkt)
           });
-             console.log("Ausgelöst")
+             console.log("Ausgelöst")},3000)
+          
         }
       }
 
@@ -131,4 +157,14 @@ a {
 .options_title{
    margin-bottom: 30px;
 }
+.beschleunigung{
+  position: absolute; 
+  width:400px;
+  right: 0px;
+  top: 0px;
+}
+#text_optionen{
+  margin-bottom:40px;
+}
 </style>
+
