@@ -1,11 +1,12 @@
 # Starte mit flask run
-from flask import Flask, json
+from flask import Flask, json, jsonify
 from decimal import Decimal
 from flask import request
 from datetime import datetime
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import select
+from flask_cors import CORS
 import json
 app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -15,6 +16,7 @@ db = SQLAlchemy(app)
 #longitude = -0.46868189640700264
 #latitude  = 51.35113755158258
 companies = [{"id": 1, "longitude": 123}, {"id": 2, "latitude": 123}]
+CORS(app, resources={r'/*': {'origins': '*'}})
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     longitude = db.Column(db.String(50))
@@ -40,7 +42,8 @@ def get_companies():
     user = db.session.query(User).order_by(User.id.desc()).first()
     results = user
     loc = [{"longitude": user.longitude, "latitude": user.latitude}]
-    return json.dumps(loc),201,{"Content-Type":"text/plain","Access-Control-Allow-Origin":"http://127.0.0.1:5000"}
+    return jsonify(loc)
+#json.dumps(loc),201,{"Content-Type":"text/plain","Access-Control-Allow-Origin":"http://127.0.0.1:8080"}
 if __name__ == '__main__':
   app.run()
 
