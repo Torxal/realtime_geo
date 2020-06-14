@@ -1,6 +1,4 @@
-
 # Starte mit flask run
-
 from flask import Flask, json
 from decimal import Decimal
 from flask import request
@@ -40,10 +38,9 @@ def get_companies():
   else:
     #Letzte Wert ausgeben
     user = db.session.query(User).order_by(User.id.desc()).first()
-    results = user     
+    results = user
     loc = [{"longitude": user.longitude, "latitude": user.latitude}]
-    return json.dumps(loc)
-
+    return json.dumps(loc),201,{"Content-Type":"text/plain","Access-Control-Allow-Origin":"http://127.0.0.1:5000"}
 if __name__ == '__main__':
   app.run()
 

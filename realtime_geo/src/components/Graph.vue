@@ -114,8 +114,10 @@ export default {
           setInterval(function(){ //console.log(this.zoom);
           axios({
           method: 'get',
-            url: 'http://localhost:5000/loc ',
-
+            url: 'http://161.97.69.29:5000/loc',
+ headers: {
+        'Access-Control-Allow-Origin': '*'
+    }, 
           })
           .then(function (response) {
             t.punkt = [Number(response.data[0].longitude), Number(response.data[0].latitude)]
