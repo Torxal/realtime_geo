@@ -26,7 +26,6 @@
       <vl-feature>
        <vl-geom-point
             :coordinates="this.punkt"
-            :color="red"
           ></vl-geom-point>
            <vl-style-box>
             <vl-style-circle :radius="15">
@@ -57,7 +56,7 @@
     </div>
   </div>
   <div class="options">
-  <v-card shaped=true>
+ 
   <h2 class="options_title">Optionen</h2>
   <p id="text_optionen">Drehwinkel</p>
     <v-slider v-model="winkel"
@@ -74,7 +73,7 @@
           ></v-slider>
            <v-btn small color="primary" v-on:click="messung">Messung</v-btn>
           
-          </v-card>
+      
         
 
           </div>
@@ -115,13 +114,17 @@ export default {
           axios({
           method: 'get',
             url: 'http://localhost:5000/loc ',
-
+            headers: {
+                "Access-Control-Allow-Origin": "*"
+           },
           })
           .then(function (response) {
             t.punkt = [Number(response.data[0].longitude), Number(response.data[0].latitude)]
             console.log(t.punkt)
+             console.log(Number(response.data[0].longitude))
           });
-             console.log("Ausgelöst")},3000)
+             console.log("Ausgelöst")},3000);
+             
           
         }
       }
