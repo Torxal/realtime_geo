@@ -2,9 +2,6 @@
 <template>
   <div class="hello">
     <div>
-      <v-alert type="warning">
-      Im Falle einer Localhost-Installation bitte Firefox nutzen und ein CORS addon installieren
-    </v-alert>
     <vl-map :load-tiles-while-animating="true" :load-tiles-while-interacting="true"
              data-projection="EPSG:4326" style="height: 400px">
       <vl-view :zoom.sync="zoom" :center.sync="center" :rotation.sync="rotation"></vl-view>
@@ -110,11 +107,13 @@ export default {
         messung: function(){
           // Trick 17
           var t = this;
+          console.log("test");
           const axios = require('axios').default;
-          setInterval(function(){ //console.log(this.zoom);
+          setInterval(function(){ 
+            console.log("this.zoom");
           axios({
           method: 'get',
-            url: 'http://161.97.69.29:5000/loc',
+            url: 'http://127.0.0.1:5000/loc',
  headers: {
         'Access-Control-Allow-Origin': '*'
     }, 
@@ -125,6 +124,25 @@ export default {
           });
              console.log("Ausgelöst")},3000)
           
+        },
+        ask_for_options: function(){
+          // Trick 17
+          var t = this;
+          console.log("test");
+          const axios = require('axios').default;
+            console.log("this.zoom");
+          axios({
+          method: 'get',
+            url: 'http://127.0.0.1:5000/app_options',
+ headers: {
+        'Access-Control-Allow-Origin': '*'
+    }, 
+          })
+          .then(function (response) {
+            t.center = [Number(response.data[0].longitude), Number(response.data[0].latitude)]
+            console.log(t.position)
+          });
+             console.log("Ausgelöst")     
         }
       }
 
